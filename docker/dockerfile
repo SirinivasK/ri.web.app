@@ -1,0 +1,13 @@
+FROM node:14
+
+WORKDIR /docker
+
+COPY main.js ./
+
+#RUN npm install
+
+COPY . .
+
+EXPOSE 8080
+
+CMD ["node", "main.js"]

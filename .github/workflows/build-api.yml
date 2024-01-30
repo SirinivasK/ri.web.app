@@ -1,0 +1,54 @@
+name: "CI/CD Workflow - Ringier API"
+
+env:
+  PROJECT_PATH: "src/ri-web-app/ri-web-app.csproj"
+  WORKING_DIR: "src/ri-web-app"
+  CONFIGURATION: "Release"
+  WEBAPP_PACKAGE_PATH: "publish"
+  ARTIFACT_NAME: "ri-web-app"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/**
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_NOLOGO: true
+      DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+      DOTNET_ADD_GLOBAL_TOOLS_TO_PATH: false
+      DOTNET_MULTILEVEL_LOOKUP: 0
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.x.x # recommend always specifying 'x' as the patch version to get latest security fixes.
+          source-url: https://api.nuget.org/v3/index.json
+
+      - name: Restore
+        working-directory: ${{env.WORKING_DIR}}
+        run: dotnet restore
+
+      - name: Build
+        working-directory: ${{env.WORKING_DIR}}
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Publish app for deploy
+        run: dotnet publish "${{ env.PROJECT_PATH }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.WEBAPP_PACKAGE_PATH }}"
+
+      - name: Publish Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.WEBAPP_PACKAGE_PATH }}
