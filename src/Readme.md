@@ -1,5 +1,6 @@
+### API
 ##### perform the following commands to run the application
-Change dirctory to the app folder /src
+##### Change dirctory to the app folder /src
 ##### run: 
  ```dotnet restore```
  ```dotnet build```
