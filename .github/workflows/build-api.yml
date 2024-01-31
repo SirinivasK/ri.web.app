@@ -1,11 +1,11 @@
 name: "CI/CD Workflow - Ringier API"
 
 env:
-  PROJECT_PATH: "src/ri-web-app/ri-web-app.csproj"
-  WORKING_DIR: "src/ri-web-app"
+  PROJECT_PATH: "src/ri.web.app/ri.web.app.csproj"
+  WORKING_DIR: "src/ri.web.app"
   CONFIGURATION: "Release"
   WEBAPP_PACKAGE_PATH: "publish"
-  ARTIFACT_NAME: "ri-web-app"
+  ARTIFACT_NAME: "ri.web.app"
 
 on:
   push:

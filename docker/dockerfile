@@ -4,8 +4,6 @@ WORKDIR /docker
 
 COPY main.js ./
 
-#RUN npm install
-
 COPY . .
 
 EXPOSE 8080
